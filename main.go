@@ -56,11 +56,12 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 	}
 	// If the message is "ping" reply with "Pong!"
 	if m.Content == "g!ping" {
-		s.ChannelMessageSend(m.ChannelID, "Pong!")
+		s.ChannelMessageSend("765802303978340352", "Pong!")
 	}
 
 	// If the message is "pong" reply with "Ping!"
 	if m.Content == "g!pong" {
-		s.ChannelMessageSend(m.ChannelID, "Ping!")
+		s.ChannelMessageSend("765802303978340352", "Ping!")
 	}
+
 }
