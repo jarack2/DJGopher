@@ -1,6 +1,6 @@
 DJ Gopher
 ----------
 
-To start, you must first run the following command:
+To start, clone the repository.
 
-go get github.com/bwmarrin/discordgo
+Then you must first run the following command: go get github.com/bwmarrin/discordgo
