@@ -64,4 +64,9 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 		s.ChannelMessageSend("765802303978340352", "Ping!")
 	}
 
+	// If the message is "pog" reply with ":gitpog:"
+	if m.Content == "pog" {
+		s.ChannelMessageSend("765802303978340352", "<:gitpog:770159988915044352>")
+	}
+
 }
