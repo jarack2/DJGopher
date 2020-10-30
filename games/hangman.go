@@ -8,13 +8,17 @@ import (
 var movesLeft = 11
 const whitespace = "\t"
 var testing = "765802303978340352" // discord testing channel
-var chosen_word = "Keebler Elves"
+var chosen_word string
 var discord_friendly_guessed_word string
 var guessed_word []byte
-// var words [9]string = [9]string{ "dwarves", "buzzard", "Josh is an idiot", "buffoon", "xylophone", "espionage", "Taylor Swift is so hot", "I love neopets", "buffoon" }
-func Hangman(s *discordgo.Session, m *discordgo.MessageCreate) {
+var words [9]string = [9]string{ "dwarves", "buzzard", "Josh is an idiot", "buffoon", "xylophone", "espionage", "Taylor Swift is so hot", "I love neopets", "buffoon" }
 
+func Hangman(s *discordgo.Session, m *discordgo.MessageCreate) {
+	start_string := "  +---+ \n  |   |\n      |\n      |\n      |\n      |\n========="
+	chosen_word = words[6]
 	s.ChannelMessageSend(testing, "Lets Play Hangman!")
+	s.ChannelMessageSend(testing, start_string)
+	
 	s.AddHandler(inputMessage)
 	
 	size := len(chosen_word)
@@ -25,12 +29,10 @@ func Hangman(s *discordgo.Session, m *discordgo.MessageCreate) {
 			guessed_word[i] = ' '
 			discord_friendly_guessed_word += " "	
 		} else {
-			guessed_word[i] = '_'	
-			discord_friendly_guessed_word += " \\_ "		
+			guessed_word[i] = '-'	
+			discord_friendly_guessed_word += "-"		
 		}
 	}
-	
-	// fmt.Println(string(guessed_word))
 	s.ChannelMessageSend(testing, discord_friendly_guessed_word)
 }
 
@@ -42,23 +44,38 @@ func inputMessage(s *discordgo.Session, m *discordgo.MessageCreate) {
 	if m.Author.ID == s.State.User.ID {
 		return
 	}
-	
-	if strings.Contains(discord_friendly_guessed_word, m.Content) {
+	if strings.Contains(strings.ToLower(chosen_word), strings.ToLower(m.Content)) {
 		new_guess := discord_friendly_guessed_word
 		for i := 0; i < len(chosen_word); i++ {
-			if chosen_word[i] == ' ' {
-				new_guess += " "	
-			} else if string(chosen_word[i]) == m.Content {
-				new_guess += m.Content
-			} else {
-				if guessed_word[i] == '_' {
-					new_guess += " \\" + string(guessed_word[i]) + " "		
-				} else {
-					new_guess += " " + string(guessed_word[i]) + " "	
-				}
+			if strings.ToLower(string(chosen_word[i])) == strings.ToLower(m.Content) {
+				char := rune(chosen_word[i])
+				new_guess = replace(new_guess, char, i)
 			}
+		}
 		discord_friendly_guessed_word = new_guess
 		s.ChannelMessageSend(testing, discord_friendly_guessed_word)
 	}
 }
+
+func replace(str string, character rune, index int) string {
+	result := []rune(str)
+	result[index] = character
+	return string(result)
 }
+
+func convertByteArray(in []byte) string {
+	result := ""
+	for i := 0; i < len(in); i++ {
+		if in[i] == ' ' {
+			
+		}
+	}
+	return result
+}
+
+// TODO restart hangman game
+// TODO count down moves when they get it wrong and display how close the man is to getting hanged
+// TODO check if the user has already guessed a letter and do not count down moves
+// TODO try to figure out how to put out a whole dictionary of words
+// TODO print out answer at end if they lose 
+// TODO abstract handler to separate function
