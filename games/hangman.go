@@ -8,7 +8,7 @@ import (
 )
 
 var dictionary [9]string = [9]string{ "dwarves", "buzzard", "Josh is an idiot", "buffoon", "xylophone", "espionage", "Taylor Swift is so hot", "I love neopets", "buffoon" }
-var hangman_display [11]string = [11]string{ "  +---+\n|      |\n		|\n		|\n		|\n		|\n=========\n\n", "  +---+\n|   |\nO   |\n		|\n		|\n		|\n=========\n\n", "  +---+\n|   |\nO   |\n|   |\n		|\n		|\n=========\n\n"}
+var hangman_display [11]string = [11]string{ "  +---+\n|       |\n		|\n		|\n		|\n		|\n=========\n\n", "  +---+\n|   |\nO   |\n		|\n		|\n		|\n=========\n\n", "  +---+\n|   |\nO   |\n|   |\n		|\n		|\n=========\n\n"}
 
 var chosen_word string
 var guessed_letters string
