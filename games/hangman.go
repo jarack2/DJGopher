@@ -12,6 +12,7 @@ var chosen_word string
 var discord_friendly_guessed_word string
 var guessed_word []byte
 var words [9]string = [9]string{ "dwarves", "buzzard", "Josh is an idiot", "buffoon", "xylophone", "espionage", "Taylor Swift is so hot", "I love neopets", "buffoon" }
+
 func Hangman(s *discordgo.Session, m *discordgo.MessageCreate) {
 	start_string := "  +---+ \n  |   |\n      |\n      |\n      |\n      |\n========="
 	chosen_word = words[6]
