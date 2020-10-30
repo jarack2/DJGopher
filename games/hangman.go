@@ -7,16 +7,17 @@ import (
 	"unicode"
 )
 
-var dictionary [9]string = [9]string{ "dwarves", "buzzard", "Josh is an idiot", "buffoon", "xylophone", "espionage", "Taylor Swift is so hot", "I love neopets", "buffoon" }
-var hangman_display [11]string = [11]string{ "  +---+\n|       |\n		|\n		|\n		|\n		|\n=========\n\n", "  +---+\n|   |\nO   |\n		|\n		|\n		|\n=========\n\n", "  +---+\n|   |\nO   |\n|   |\n		|\n		|\n=========\n\n"}
+var dictionary [9]string = [9]string{ "dwarves", "buzzard", "Josh is an idiot", "buffoon", "xylophone", "espionage", "Taylor Swift is so hot", "I love neopets", "buffoon" } // a makeshift dictionary
+var hangman_display [7]string = [7]string{ "  +---+\n|       |\n		|\n		|\n		|\n		|\n=========\n\n", "  +---+\n|   |\nO   |\n		|\n		|\n		|\n=========\n\n", "  +---+\n|   |\nO   |\n|   |\n		|\n		|\n=========\n\n",  "  +---+\n|       |\n		|\n		|\n		|\n		|\n=========\n\n", "  +---+\n|   |\nO   |\n		|\n		|\n		|\n=========\n\n", "  +---+\n|   |\nO   |\n|   |\n		|\n		|\n=========\n\n"}
 
-var chosen_word string
-var guessed_letters string
-var guessed_word string
+var chosen_word string // the word picked from the dictionary
+var guessed_letters string // the letters that the user has guessed
+var guessed_word string // the word that the user is currently testing
 
 var testing = "765802303978340352" // discord testing channel
 
-var movesLeft = 11
+var movesLeft = 7 // how many wrong moves the user has left
+var display = 0 // where the display is in the array
 func Hangman(s *discordgo.Session, m *discordgo.MessageCreate) {
 	chosen_word = dictionary[1]
 	s.ChannelMessageSend(testing, "Lets Play Hangman!")
@@ -73,7 +74,8 @@ func inputMessage(s *discordgo.Session, m *discordgo.MessageCreate) {
 					s.ChannelMessageSend(testing, "You failed to guess: \"" + chosen_word + "\". Better luck next time.\n")
 					s.ChannelMessageSend(testing, "You can play again with the command: g!hangman restart\n" )
 				} else { // wrong input, but the user hasnt lost yet
-					s.ChannelMessageSend(testing, user_input + " is not in the word.\n" + "You have " + strconv.Itoa(movesLeft) + " moves left.\n" + "Keep Guessing!\n" + guessed_word + "\n")
+					display++
+					s.ChannelMessageSend(testing, user_input + " is not in the word.\n" + "You have " + strconv.Itoa(movesLeft) + " wrong choices left.\n" + hangman_display[display] + "Keep Guessing!\n" + guessed_word + "\n")
 				}
 			}
 		
@@ -112,9 +114,7 @@ func won() bool{
 }
 
 // TODO restart hangman game
-// TODO count down moves when they get it wrong and display how close the man is to getting hanged
-// TODO check if the user has already guessed a letter and do not count down moves
 // TODO try to figure out how to put out a whole dictionary of dictionary
-// TODO print out answer at end if they lose 
 // TODO abstract handler to separate function
 // TODO print letters they have used 
+// TODO fix or take out ascii art
