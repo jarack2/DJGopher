@@ -5,12 +5,13 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
-
 	"github.com/bwmarrin/discordgo"
+	"DJGopher/games"
 )
 
 const Token string = "NzcwMDAyMzExODc4OTM0NTI4.X5XOiQ.Z9F3_0y55l_VScYv7qx_zbV38rg"
 
+var game_running = false
 var BotID string
 
 func main() {
@@ -22,8 +23,8 @@ func main() {
 		return
 	}
 
-	// Register the messageCreate func as a callback for MessageCreate events.
-	dg.AddHandler(messageCreate)
+	// Register the runProgram func as a callback for MessageCreate events.
+	dg.AddHandler(runProgram)
 
 	// In this example, we only care about receiving message events.
 	dg.Identify.Intents = discordgo.MakeIntent(discordgo.IntentsGuildMessages)
@@ -47,8 +48,8 @@ func main() {
 
 // This function will be called (due to AddHandler above) every time a new
 // message is created on any channel that the authenticated bot has access to.
-func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
-
+func runProgram(s *discordgo.Session, m *discordgo.MessageCreate) {
+	testing := "765802303978340352"
 	// Ignore all messages created by the bot itself
 	// This isn't required in this specific example but it's a good practice.
 	if m.Author.ID == s.State.User.ID {
@@ -56,17 +57,25 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 	}
 	// If the message is "ping" reply with "Pong!"
 	if m.Content == "g!ping" {
-		s.ChannelMessageSend("765802303978340352", "Pong!")
+		s.ChannelMessageSend(testing, "Pong!")
 	}
 
 	// If the message is "pong" reply with "Ping!"
 	if m.Content == "g!pong" {
-		s.ChannelMessageSend("765802303978340352", "Ping!")
+		s.ChannelMessageSend(testing, "Ping!")
 	}
 
 	// If the message is "pog" reply with ":gitpog:"
 	if m.Content == "pog" {
-		s.ChannelMessageSend("765802303978340352", "<:gitpog:770159988915044352>")
+		s.ChannelMessageSend(testing, "<:gitpog:770159988915044352>")
 	}
-
+	
+	if m.Content == "g!hangman" { 
+		if !game_running {
+			game_running = true
+			games.Hangman(s, m)
+		}
+	}
+	
+	//TODO restart hangman game
 }
