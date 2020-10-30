@@ -70,7 +70,7 @@ func inputMessage(s *discordgo.Session, m *discordgo.MessageCreate) {
 				movesLeft--
 			
 				if lost() { // the user has lost the game
-					s.ChannelMessageSend(testing, "You failed to guess: " + chosen_word + ". Better luck next time.\n")
+					s.ChannelMessageSend(testing, "You failed to guess: \"" + chosen_word + "\". Better luck next time.\n")
 					s.ChannelMessageSend(testing, "You can play again with the command: g!hangman restart\n" )
 				} else { // wrong input, but the user hasnt lost yet
 					s.ChannelMessageSend(testing, user_input + " is not in the word.\n" + "You have " + strconv.Itoa(movesLeft) + " moves left.\n" + "Keep Guessing!\n" + guessed_word + "\n")
