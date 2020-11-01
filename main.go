@@ -74,7 +74,7 @@ func runProgram(s *discordgo.Session, m *discordgo.MessageCreate) {
 	}
 	
 	if m.Content == "g!hangman restart" {
-		s.ChannelMessageSend(testing, "Restarting...")
+		games.Restart(s, m)
 		game_running = false
 		return
 	}

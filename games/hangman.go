@@ -3,11 +3,12 @@ package games
 import (
 	"github.com/bwmarrin/discordgo"
 	"strings"
-	"strconv"
+	"strconv" 
+	"math/rand"
 	//"unicode"
 )
 
-var dictionary [9]string = [9]string{ "dwarves", "buzzard", "buffoon", "xylophone", "espionage", "Taylor Swift is so hot", "I love neopets", "buffoon" } // a makeshift dictionary
+var dictionary [8]string = [8]string{ "dwarves", "buzzard", "buffoon", "xylophone", "espionage", "Taylor Swift is so hot", "I love neopets", "buffoon" } // a makeshift dictionary
 var hangman_display [7]string = [7]string{ "  +---+\n|       |\n		|\n		|\n		|\n		|\n=========\n\n", "  +---+\n|   |\nO   |\n		|\n		|\n		|\n=========\n\n", "  +---+\n|   |\nO   |\n|   |\n		|\n		|\n=========\n\n",  "  +---+\n|       |\n		|\n		|\n		|\n		|\n=========\n\n", "  +---+\n|   |\nO   |\n		|\n		|\n		|\n=========\n\n", "  +---+\n|   |\nO   |\n|   |\n		|\n		|\n=========\n\n"}
 
 var chosen_word string // the word picked from the dictionary
@@ -20,9 +21,9 @@ var movesLeft = 7 // how many wrong moves the user has left
 var display = 0 // where the display is in the array
 func Hangman(s *discordgo.Session, m *discordgo.MessageCreate, game_running bool) {
 	if !game_running {
-		chosen_word = dictionary[1]
+		chosen_word = dictionary[rand.Intn(8)]
 		s.ChannelMessageSend(testing, "Lets Play Hangman!")
-		s.ChannelMessageSend(testing, hangman_display[0])
+		s.ChannelMessageSend(testing, hangman_display[display])
 	
 		for i := 0; i < len(chosen_word); i++ { // creates the length of the string in underscores to print for hangman
 			if chosen_word[i] == ' ' {
@@ -37,6 +38,15 @@ func Hangman(s *discordgo.Session, m *discordgo.MessageCreate, game_running bool
 		inputMessage(s, m)
 	}
 	return
+}
+
+func Restart(s *discordgo.Session, m *discordgo.MessageCreate) {
+	s.ChannelMessageSend(testing, "Restarting...")
+	movesLeft = 7
+	display = 0
+	guessed_word = ""
+	guessed_letters = ""
+	return 
 }
 
 // callback function for when the user guesses a letter
