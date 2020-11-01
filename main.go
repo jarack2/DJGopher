@@ -58,24 +58,40 @@ func runProgram(s *discordgo.Session, m *discordgo.MessageCreate) {
 	// If the message is "ping" reply with "Pong!"
 	if m.Content == "g!ping" {
 		s.ChannelMessageSend(testing, "Pong!")
+		return
 	}
 
 	// If the message is "pong" reply with "Ping!"
 	if m.Content == "g!pong" {
 		s.ChannelMessageSend(testing, "Ping!")
+		return
 	}
 
 	// If the message is "pog" reply with ":gitpog:"
 	if m.Content == "pog" {
 		s.ChannelMessageSend(testing, "<:gitpog:770159988915044352>")
+		return
 	}
 	
-	if m.Content == "g!hangman" { 
+	if m.Content == "g!hangman restart" {
+		s.ChannelMessageSend(testing, "Restarting...")
+		game_running = false
+		return
+	}
+	
+	if (m.Content == "g!hangman" || game_running == true) { 
 		if !game_running {
+			games.Hangman(s, m, game_running)
 			game_running = true
-			games.Hangman(s, m)
+			return
 		}
+		games.Hangman(s, m, game_running)
+		return
 	}
-	
+
+	if m.Content == "sup" {
+		s.ChannelMessageSend(testing, "sup")
+		return
+	}
 	//TODO restart hangman game
 }

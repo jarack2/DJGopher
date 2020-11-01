@@ -4,10 +4,10 @@ import (
 	"github.com/bwmarrin/discordgo"
 	"strings"
 	"strconv"
-	"unicode"
+	//"unicode"
 )
 
-var dictionary [9]string = [9]string{ "dwarves", "buzzard", "Josh is an idiot", "buffoon", "xylophone", "espionage", "Taylor Swift is so hot", "I love neopets", "buffoon" } // a makeshift dictionary
+var dictionary [9]string = [9]string{ "dwarves", "buzzard", "buffoon", "xylophone", "espionage", "Taylor Swift is so hot", "I love neopets", "buffoon" } // a makeshift dictionary
 var hangman_display [7]string = [7]string{ "  +---+\n|       |\n		|\n		|\n		|\n		|\n=========\n\n", "  +---+\n|   |\nO   |\n		|\n		|\n		|\n=========\n\n", "  +---+\n|   |\nO   |\n|   |\n		|\n		|\n=========\n\n",  "  +---+\n|       |\n		|\n		|\n		|\n		|\n=========\n\n", "  +---+\n|   |\nO   |\n		|\n		|\n		|\n=========\n\n", "  +---+\n|   |\nO   |\n|   |\n		|\n		|\n=========\n\n"}
 
 var chosen_word string // the word picked from the dictionary
@@ -18,22 +18,25 @@ var testing = "765802303978340352" // discord testing channel
 
 var movesLeft = 7 // how many wrong moves the user has left
 var display = 0 // where the display is in the array
-func Hangman(s *discordgo.Session, m *discordgo.MessageCreate) {
-	chosen_word = dictionary[1]
-	s.ChannelMessageSend(testing, "Lets Play Hangman!")
-	s.ChannelMessageSend(testing, hangman_display[0])
+func Hangman(s *discordgo.Session, m *discordgo.MessageCreate, game_running bool) {
+	if !game_running {
+		chosen_word = dictionary[1]
+		s.ChannelMessageSend(testing, "Lets Play Hangman!")
+		s.ChannelMessageSend(testing, hangman_display[0])
 	
-	s.AddHandler(inputMessage)
-
-	for i := 0; i < len(chosen_word); i++ { // creates the length of the string in underscores to print for hangman
-		if chosen_word[i] == ' ' {
-			guessed_word += " "	
-		} else {
-			guessed_word += "-"		
+		for i := 0; i < len(chosen_word); i++ { // creates the length of the string in underscores to print for hangman
+			if chosen_word[i] == ' ' {
+				guessed_word += " "	
+			} else {
+				guessed_word += "-"		
+			}
 		}
+		
+		s.ChannelMessageSend(testing, guessed_word)
+	} else {
+		inputMessage(s, m)
 	}
-	
-	s.ChannelMessageSend(testing, guessed_word)
+	return
 }
 
 // callback function for when the user guesses a letter
@@ -43,16 +46,16 @@ func inputMessage(s *discordgo.Session, m *discordgo.MessageCreate) {
 		return
 	}
 	
-	if (lost()) {
+	if (lost() || won()) {
 		return
 	}
 	
 	user_input := m.Content
 	
-	if len(user_input) > 1 || !unicode.IsLetter(rune(user_input[0])) { // the user input should only be a single character and should be a letter [a-z]
-		s.ChannelMessageSend(testing, "The user input is invalid. Please try again.\n")
-		return
-	}
+	//if len(user_input) > 1 || !unicode.IsLetter(rune(user_input[0])) { // the user input should only be a single character and should be a letter [a-z]
+	//	s.ChannelMessageSend(testing, "The user input is invalid. Please try again.\n")
+	//	return
+	//}
 	
 	if strings.Contains(strings.ToLower(guessed_letters), strings.ToLower(user_input)) { // if the user has already guessed a letter
 		s.ChannelMessageSend(testing, "You have already guessed that letter. Please try another one.\n")
@@ -67,15 +70,18 @@ func inputMessage(s *discordgo.Session, m *discordgo.MessageCreate) {
 					s.ChannelMessageSend(testing, "You guessed the word!\n" + "You can play again with the command: g!hangman restart\n" )
 					return
 				}
+				return
 			} else { // chosen letter is not in the word
 				movesLeft--
 			
 				if lost() { // the user has lost the game
 					s.ChannelMessageSend(testing, "You failed to guess: \"" + chosen_word + "\". Better luck next time.\n")
 					s.ChannelMessageSend(testing, "You can play again with the command: g!hangman restart\n" )
+					return
 				} else { // wrong input, but the user hasnt lost yet
 					display++
 					s.ChannelMessageSend(testing, user_input + " is not in the word.\n" + "You have " + strconv.Itoa(movesLeft) + " wrong choices left.\n" + hangman_display[display] + "Keep Guessing!\n" + guessed_word + "\n")
+					return
 				}
 			}
 		
