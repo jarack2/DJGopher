@@ -1,9 +1,5 @@
-//TODO: allow different users to play differet games
-// TODO restart hangman game
-// TODO try to figure out how to put out a whole dictionary of dictionary
-// TODO abstract handler to separate function
-// TODO print letters they have used 
-// TODO fix or take out ascii art
+// TODO: allow different users to play differet games
+// TODO: make sure word cannot be whitespace
 
 package games
 
