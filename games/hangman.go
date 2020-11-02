@@ -5,11 +5,10 @@ import (
 	"strings"
 	"strconv" 
 	"math/rand"
-	//"unicode"
+	"unicode"
 )
 
-var dictionary [8]string = [8]string{ "dwarves", "buzzard", "buffoon", "xylophone", "espionage", "Taylor Swift is so hot", "I love neopets", "buffoon" } // a makeshift dictionary
-var hangman_display [7]string = [7]string{ "  +---+\n|       |\n		|\n		|\n		|\n		|\n=========\n\n", "  +---+\n|   |\nO   |\n		|\n		|\n		|\n=========\n\n", "  +---+\n|   |\nO   |\n|   |\n		|\n		|\n=========\n\n",  "  +---+\n|       |\n		|\n		|\n		|\n		|\n=========\n\n", "  +---+\n|   |\nO   |\n		|\n		|\n		|\n=========\n\n", "  +---+\n|   |\nO   |\n|   |\n		|\n		|\n=========\n\n"}
+var dictionary [8]string = [8]string { "dwarves", "buzzard", "buffoon", "xylophone", "espionage", "Taylor Swift is so hot", "I love neopets", "buffoon" } // a makeshift dictionary
 
 var chosen_word string // the word picked from the dictionary
 var guessed_letters string // the letters that the user has guessed
@@ -23,7 +22,7 @@ func Hangman(s *discordgo.Session, m *discordgo.MessageCreate, game_running bool
 	if !game_running {
 		chosen_word = dictionary[rand.Intn(8)]
 		s.ChannelMessageSend(testing, "Lets Play Hangman!")
-		s.ChannelMessageSend(testing, hangman_display[display])
+		s.ChannelMessageSend(testing, Hangman_display[display])
 	
 		for i := 0; i < len(chosen_word); i++ { // creates the length of the string in underscores to print for hangman
 			if chosen_word[i] == ' ' {
@@ -62,10 +61,10 @@ func inputMessage(s *discordgo.Session, m *discordgo.MessageCreate) {
 	
 	user_input := m.Content
 	
-	//if len(user_input) > 1 || !unicode.IsLetter(rune(user_input[0])) { // the user input should only be a single character and should be a letter [a-z]
-	//	s.ChannelMessageSend(testing, "The user input is invalid. Please try again.\n")
-	//	return
-	//}
+	if len(user_input) > 1 || !unicode.IsLetter(rune(user_input[0])) { // the user input should only be a single character and should be a letter [a-z]
+		s.ChannelMessageSend(testing, "The user input is invalid. Please try again.\n")
+		return
+	}
 	
 	if strings.Contains(strings.ToLower(guessed_letters), strings.ToLower(user_input)) { // if the user has already guessed a letter
 		s.ChannelMessageSend(testing, "You have already guessed that letter. Please try another one.\n")
@@ -90,7 +89,7 @@ func inputMessage(s *discordgo.Session, m *discordgo.MessageCreate) {
 					return
 				} else { // wrong input, but the user hasnt lost yet
 					display++
-					s.ChannelMessageSend(testing, user_input + " is not in the word.\n" + "You have " + strconv.Itoa(movesLeft) + " wrong choices left.\n" + hangman_display[display] + "Keep Guessing!\n" + guessed_word + "\n")
+					s.ChannelMessageSend(testing, user_input + " is not in the word.\n" + "You have " + strconv.Itoa(movesLeft) + " wrong choices left.\n" + Hangman_display[display] + "\nKeep Guessing!\n" + guessed_word + "\n")
 					return
 				}
 			}
@@ -134,3 +133,4 @@ func won() bool{
 // TODO abstract handler to separate function
 // TODO print letters they have used 
 // TODO fix or take out ascii art
+
