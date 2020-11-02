@@ -1,3 +1,10 @@
+//TODO: allow different users to play differet games
+// TODO restart hangman game
+// TODO try to figure out how to put out a whole dictionary of dictionary
+// TODO abstract handler to separate function
+// TODO print letters they have used 
+// TODO fix or take out ascii art
+
 package games
 
 import (
@@ -6,10 +13,13 @@ import (
 	"strconv" 
 	"math/rand"
 	"unicode"
+	"bufio"
+	"fmt"
+    "log"
+    "os"
 )
 
-var dictionary [8]string = [8]string { "dwarves", "buzzard", "buffoon", "xylophone", "espionage", "Taylor Swift is so hot", "I love neopets", "buffoon" } // a makeshift dictionary
-
+var dictionary []string // a makeshift dictionary
 var chosen_word string // the word picked from the dictionary
 var guessed_letters string // the letters that the user has guessed
 var guessed_word string // the word that the user is currently testing
@@ -20,7 +30,9 @@ var movesLeft = 7 // how many wrong moves the user has left
 var display = 0 // where the display is in the array
 func Hangman(s *discordgo.Session, m *discordgo.MessageCreate, game_running bool) {
 	if !game_running {
-		chosen_word = dictionary[rand.Intn(8)]
+		createWordBank()
+		chosen_word = dictionary[rand.Intn(len(dictionary))]
+		fmt.Println(chosen_word)
 		s.ChannelMessageSend(testing, "Lets Play Hangman!")
 		s.ChannelMessageSend(testing, Hangman_display[display])
 	
@@ -46,6 +58,25 @@ func Restart(s *discordgo.Session, m *discordgo.MessageCreate) {
 	guessed_word = ""
 	guessed_letters = ""
 	return 
+}
+
+func createWordBank() {
+	file, err := os.Open("./games/words.txt")
+    if err != nil {
+        log.Fatal(err)
+    }
+    defer file.Close()
+
+    scanner := bufio.NewScanner(file)
+    for scanner.Scan() {
+    	if(scanner.Text() != "") {
+        	dictionary = append(dictionary, scanner.Text())
+    	}
+    }
+
+    if err := scanner.Err(); err != nil {
+        log.Fatal(err)
+    }
 }
 
 // callback function for when the user guesses a letter
@@ -127,10 +158,3 @@ func won() bool{
 	}
 	return false
 }
-
-// TODO restart hangman game
-// TODO try to figure out how to put out a whole dictionary of dictionary
-// TODO abstract handler to separate function
-// TODO print letters they have used 
-// TODO fix or take out ascii art
-

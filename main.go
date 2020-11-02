@@ -93,5 +93,6 @@ func runProgram(s *discordgo.Session, m *discordgo.MessageCreate) {
 		s.ChannelMessageSend(testing, "sup")
 		return
 	}
+	
 	//TODO restart hangman game
 }
