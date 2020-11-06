@@ -6,12 +6,13 @@ import (
 	"os/signal"
 	"syscall"
 	"github.com/bwmarrin/discordgo"
-	"DJGopher/games"
+	"./games"
 )
 
 const Token string = "NzcwMDAyMzExODc4OTM0NTI4.X5XOiQ.Z9F3_0y55l_VScYv7qx_zbV38rg"
 
 var game_running = false
+var trivia_game_running = false
 var BotID string
 
 func main() {
@@ -86,6 +87,16 @@ func runProgram(s *discordgo.Session, m *discordgo.MessageCreate) {
 			return
 		}
 		games.Hangman(s, m, game_running)
+		return
+	}
+
+	if (m.Content == "g!trivia" || trivia_game_running == true) {
+		if trivia_game_running {
+			games.Trivia(s, m, trivia_game_running)
+			trivia_game_running = true
+			return
+		}
+		trivia_game_running = games.Trivia(s, m, trivia_game_running)
 		return
 	}
 
