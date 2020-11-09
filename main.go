@@ -91,7 +91,7 @@ func runProgram(s *discordgo.Session, m *discordgo.MessageCreate) {
 	}
 
 	if (m.Content == "g!trivia" || trivia_game_running == true) {
-		if trivia_game_running {
+		if !trivia_game_running {
 			games.Trivia(s, m, trivia_game_running)
 			trivia_game_running = true
 			return
