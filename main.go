@@ -1,8 +1,8 @@
 package main
 
 import (
-	"DJGopher/games"
-	"DJGopher/music"
+	"./games"
+	"./musicplayer"
 	"fmt"
 	"os"
 	"os/signal"
