@@ -87,7 +87,6 @@ func runProgram(s *discordgo.Session, m *discordgo.MessageCreate) {
 	if m.Content == "m!gag" {
 		music_running = true
 		s.UpdateStatus(0, "gag music!");
-		fmt.Print("gag")
 		musicplayer.MusicPlayer(s, m, "music/gag/")
 	}
 
@@ -95,6 +94,12 @@ func runProgram(s *discordgo.Session, m *discordgo.MessageCreate) {
 		music_running = true
 		s.UpdateStatus(0, "pop music!");
 		musicplayer.MusicPlayer(s, m, "music/pop/")
+	}
+
+	if m.Content == "m!playrock" {
+		music_running = true
+		s.UpdateStatus(0, "rock music!")
+		musicplayer.MusicPlayer(s, m, "music/rock/")
 	}
 
 	// If the message is "pong" reply with "Ping!"
