@@ -155,9 +155,9 @@ func runProgram(s *discordgo.Session, m *discordgo.MessageCreate) {
 		return
 	}
 
-	if m.Content == "g!trivia" || triviaGameRunning == true {
+	if m.Content == "g!trivia" || triviaGameRunning {
 		s.UpdateStatus(0, "trivia!")
-		if triviaGameRunning {
+		if !triviaGameRunning {
 			games.Trivia(s, m, triviaGameRunning)
 			triviaGameRunning = true
 			return
