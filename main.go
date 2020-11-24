@@ -73,10 +73,10 @@ func runProgram(s *discordgo.Session, m *discordgo.MessageCreate) {
 		return
 	}
 
-	if m.Content == "m!play" && !music_running {
-		music_running = true
-		s.UpdateStatus(0, "music!");
-		musicplayer.MusicPlayer(s, m, "")
+	//TODO: have it play all music in music folder
+	if m.Content == "g!playall" && !music_running {
+		s.UpdateStatus(0, "all music!")
+		musicplayer.MusicPlayer(s, m, "music/")
 	}
 
 	if m.Content == "m!stop" {
@@ -84,22 +84,40 @@ func runProgram(s *discordgo.Session, m *discordgo.MessageCreate) {
 		musicplayer.MusicPlayer(s, m, "")
 	}
 
-	if m.Content == "m!gag" {
+	if m.Content == "m!rickroll" && !music_running {
+		music_running = true
+		s.UpdateStatus(0, "rickroll!")
+		musicplayer.MusicPlayer(s, m, "music/rickroll/")
+	}
+
+	if m.Content == "m!gag" && !music_running {
 		music_running = true
 		s.UpdateStatus(0, "gag music!");
 		musicplayer.MusicPlayer(s, m, "music/gag/")
 	}
 
-	if m.Content == "m!playpop" {
+	if m.Content == "m!jazz" && !music_running {
+		music_running = true
+		s.UpdateStatus(0, "jazz music!")
+		musicplayer.MusicPlayer(s, m, "music/jazz/")
+	}
+
+	if m.Content == "m!pop" && !music_running {
 		music_running = true
 		s.UpdateStatus(0, "pop music!");
 		musicplayer.MusicPlayer(s, m, "music/pop/")
 	}
 
-	if m.Content == "m!playrock" {
+	if m.Content == "m!rock" && !music_running {
 		music_running = true
 		s.UpdateStatus(0, "rock music!")
 		musicplayer.MusicPlayer(s, m, "music/rock/")
+	}
+
+	if m.Content == "m!alternative" && !music_running {
+		music_running = true
+		s.UpdateStatus(0, "alternative music!")
+		musicplayer.MusicPlayer(s, m, "music/alternative/")
 	}
 
 	// If the message is "pong" reply with "Ping!"

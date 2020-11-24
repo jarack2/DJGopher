@@ -20,8 +20,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8242eb07-3229-4c73-9d2b-18f5a980acea" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/music/rickroll/rickRoll.dca" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/music/rock/2AyeAyeAye.dca" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/music/pop/airhorn.dca" beforeDir="false" afterPath="$PROJECT_DIR$/music/gag/airhorn.dca" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,16 +43,19 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="go.import.settings.migrated" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/music/rickroll" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\Josue\Desktop\School\Fall2020\CS354\Projects\DJGopher" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Josue\Desktop\School\Fall2020\CS354\Projects\DJGopher\music\gag" />
       <recent name="C:\Users\Josue\Desktop\School\Fall2020\CS354\Projects\DJGopher\music\pop" />
       <recent name="C:\Users\Josue\Desktop\School\Fall2020\CS354\Projects\DJGopher" />
       <recent name="C:\Users\Josue\Desktop\School\Fall2020\CS354\Projects\DJGopher\music" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Josue\Desktop\School\Fall2020\CS354\Projects\DJGopher\music\rickroll" />
+      <recent name="C:\Users\Josue\Desktop\School\Fall2020\CS354\Projects\DJGopher\music\rock" />
+      <recent name="C:\Users\Josue\Desktop\School\Fall2020\CS354\Projects\DJGopher" />
     </key>
   </component>
   <component name="RunManager">
@@ -99,10 +104,10 @@
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
     <state x="817" y="487" key="#GOROOT/0.0.2048.1112/1279.-1024.1280.984@0.0.2048.1112" timestamp="1606168010521" />
-    <state x="782" y="358" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1606177350153">
+    <state x="782" y="358" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1606252219434">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
-    <state x="782" y="358" key="#com.intellij.fileTypes.FileTypeChooser/0.0.2048.1112/1279.-1024.1280.984@0.0.2048.1112" timestamp="1606177350153" />
+    <state x="782" y="358" key="#com.intellij.fileTypes.FileTypeChooser/0.0.2048.1112/1279.-1024.1280.984@0.0.2048.1112" timestamp="1606252219434" />
     <state width="2005" height="305" key="GridCell.Tab.0.bottom" timestamp="1606168040510">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
