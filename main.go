@@ -1,21 +1,25 @@
 package main
 
 import (
-	"./games"
-	"./musicplayer"
 	"fmt"
 	"os"
 	"os/signal"
 	"syscall"
 
+	"./games"
+	"./musicplayer"
+
 	"github.com/bwmarrin/discordgo"
 )
 
+// Token - tring for the discord bot
 const Token string = "NzcwMDAyMzExODc4OTM0NTI4.X5XOiQ.Z9F3_0y55l_VScYv7qx_zbV38rg"
 
-var game_running = false
-var music_running = false
-var trivia_game_running = false
+var gameRunning = false
+var musicRunning = false
+var triviaGameRunning = false
+
+// BotID is the unique id of the bot
 var BotID string
 
 func main() {
@@ -74,91 +78,91 @@ func runProgram(s *discordgo.Session, m *discordgo.MessageCreate) {
 	}
 
 	//TODO: have it play all music in music folder
-	if m.Content == "g!playall" && !music_running {
+	if m.Content == "g!playall" && !musicRunning {
 		s.UpdateStatus(0, "all music!")
 		musicplayer.MusicPlayer(s, m, "music/")
 	}
 
 	if m.Content == "m!stop" {
-		music_running = false
+		musicRunning = false
 		musicplayer.MusicPlayer(s, m, "")
 	}
 
-	if m.Content == "m!rickroll" && !music_running {
-		music_running = true
+	if m.Content == "m!rickroll" && !musicRunning {
+		musicRunning = true
 		s.UpdateStatus(0, "rickroll!")
 		musicplayer.MusicPlayer(s, m, "music/rickroll/")
 	}
 
-	if m.Content == "m!gag" && !music_running {
-		music_running = true
-		s.UpdateStatus(0, "gag music!");
+	if m.Content == "m!gag" && !musicRunning {
+		musicRunning = true
+		s.UpdateStatus(0, "gag music!")
 		musicplayer.MusicPlayer(s, m, "music/gag/")
 	}
 
-	if m.Content == "m!jazz" && !music_running {
-		music_running = true
+	if m.Content == "m!jazz" && !musicRunning {
+		musicRunning = true
 		s.UpdateStatus(0, "jazz music!")
 		musicplayer.MusicPlayer(s, m, "music/jazz/")
 	}
 
-	if m.Content == "m!pop" && !music_running {
-		music_running = true
-		s.UpdateStatus(0, "pop music!");
+	if m.Content == "m!pop" && !musicRunning {
+		musicRunning = true
+		s.UpdateStatus(0, "pop music!")
 		musicplayer.MusicPlayer(s, m, "music/pop/")
 	}
 
-	if m.Content == "m!rock" && !music_running {
-		music_running = true
+	if m.Content == "m!rock" && !musicRunning {
+		musicRunning = true
 		s.UpdateStatus(0, "rock music!")
 		musicplayer.MusicPlayer(s, m, "music/rock/")
 	}
 
-	if m.Content == "m!alternative" && !music_running {
-		music_running = true
+	if m.Content == "m!alternative" && !musicRunning {
+		musicRunning = true
 		s.UpdateStatus(0, "alternative music!")
 		musicplayer.MusicPlayer(s, m, "music/alternative/")
 	}
 
 	// If the message is "pong" reply with "Ping!"
 	if m.Content == "g!pong" {
-		s.UpdateStatus(0, "pong!");
+		s.UpdateStatus(0, "pong!")
 		s.ChannelMessageSend(testing, "Ping!")
 		return
 	}
 
 	// If the message is "pog" reply with ":gitpog:"
 	if m.Content == "pog" {
-		s.UpdateStatus(0, "pog!");
+		s.UpdateStatus(0, "pog!")
 		s.ChannelMessageSend(testing, "<:gitpog:770159988915044352>")
 		return
 	}
 
 	if m.Content == "g!hangman stop" {
 		games.Restart(s, m)
-		game_running = false
+		gameRunning = false
 		return
 	}
 
-	if m.Content == "g!hangman" || game_running == true {
-		s.UpdateStatus(0, "hangman!");
-		if !game_running {
-			games.Hangman(s, m, game_running)
-			game_running = true
+	if m.Content == "g!hangman" || gameRunning == true {
+		s.UpdateStatus(0, "hangman!")
+		if !gameRunning {
+			games.Hangman(s, m, gameRunning)
+			gameRunning = true
 			return
 		}
-		games.Hangman(s, m, game_running)
+		games.Hangman(s, m, gameRunning)
 		return
 	}
 
-	if m.Content == "g!trivia" || trivia_game_running == true {
-		s.UpdateStatus(0, "trivia!");
-		if trivia_game_running {
-			games.Trivia(s, m, trivia_game_running)
-			trivia_game_running = true
+	if m.Content == "g!trivia" || triviaGameRunning == true {
+		s.UpdateStatus(0, "trivia!")
+		if triviaGameRunning {
+			games.Trivia(s, m, triviaGameRunning)
+			triviaGameRunning = true
 			return
 		}
-		trivia_game_running = games.Trivia(s, m, trivia_game_running)
+		triviaGameRunning = games.Trivia(s, m, triviaGameRunning)
 		return
 	}
 }
