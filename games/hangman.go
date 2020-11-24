@@ -103,7 +103,7 @@ func inputMessage(s *discordgo.Session, m *discordgo.MessageCreate) {
 				replaceWordWithSuccessfulGuess(user_input)
 				s.ChannelMessageSend(testing, guessed_word)
 				if won() {
-					s.ChannelMessageSend(testing, "You guessed the word!\n" + "You can play again with the command: g!hangman restart\n" )
+					s.ChannelMessageSend(testing, "You guessed the word!\n" + "You can play again with the command: g!hangman stop\n" )
 					return
 				}
 				return
@@ -112,7 +112,7 @@ func inputMessage(s *discordgo.Session, m *discordgo.MessageCreate) {
 			
 				if lost() { // the user has lost the game
 					s.ChannelMessageSend(testing, "You failed to guess: \"" + chosen_word + "\". Better luck next time.\n")
-					s.ChannelMessageSend(testing, "You can play again with the command: g!hangman restart\n" )
+					s.ChannelMessageSend(testing, "You can play again with the command: g!hangman stop\n" )
 					return
 				} else { // wrong input, but the user hasnt lost yet
 					display++
