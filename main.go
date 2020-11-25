@@ -5,14 +5,16 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
-	"github.com/bwmarrin/discordgo"
+
 	"./games"
+	"github.com/bwmarrin/discordgo"
 )
 
 const Token string = "NzcwMDAyMzExODc4OTM0NTI4.X5XOiQ.Z9F3_0y55l_VScYv7qx_zbV38rg"
 
 var game_running = false
 var trivia_game_running = false
+var connectFourRunning = false
 var BotID string
 
 func main() {
@@ -73,14 +75,14 @@ func runProgram(s *discordgo.Session, m *discordgo.MessageCreate) {
 		s.ChannelMessageSend(testing, "<:gitpog:770159988915044352>")
 		return
 	}
-	
+
 	if m.Content == "g!hangman restart" {
 		games.Restart(s, m)
 		game_running = false
 		return
 	}
-	
-	if (m.Content == "g!hangman" || game_running == true) { 
+
+	if m.Content == "g!hangman" || game_running == true {
 		if !game_running {
 			games.Hangman(s, m, game_running)
 			game_running = true
@@ -90,7 +92,19 @@ func runProgram(s *discordgo.Session, m *discordgo.MessageCreate) {
 		return
 	}
 
-	if (m.Content == "g!trivia" || trivia_game_running == true) {
+	if m.Content == "g!connect4" || connectFourRunning == true {
+		playerStart := m.Author.ID
+		if !connectFourRunning {
+			games.ConnectFour(s, m, connectFourRunning, playerStart)
+			connectFourRunning = true
+			return
+		}
+		
+		games.ConnectFour(s, m, connectFourRunning, playerStart)
+		return
+	}
+
+	if m.Content == "g!trivia" || trivia_game_running == true {
 		if !trivia_game_running {
 			games.Trivia(s, m, trivia_game_running)
 			trivia_game_running = true
@@ -104,6 +118,6 @@ func runProgram(s *discordgo.Session, m *discordgo.MessageCreate) {
 		s.ChannelMessageSend(testing, "sup")
 		return
 	}
-	
+
 	//TODO restart hangman game
 }
