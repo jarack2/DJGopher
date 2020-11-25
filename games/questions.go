@@ -5,7 +5,7 @@ type qanda struct {
 	answer int
 }
 
-var questionArray = [9]qanda {
+var questionArray = [21]qanda {
 	qanda {
 		"How many Earths could fit inside the sun?",
 		1300000,
@@ -41,5 +41,53 @@ var questionArray = [9]qanda {
 	qanda {
 		"How many national parks are in the United States as of 2020?",
 		421,
+	},
+	qanda {
+		"What is the average weight of a cumulus cloud in pounds?",
+		1100000,
+	},
+	qanda {
+		"How many ways are there to make change for a U.S. dollar?",
+		293,
+	},
+	qanda {
+		"How many floors are on the empire state building?",
+		102,
+	},
+	qanda {
+		"How hot was the highest recorded temperature on Earth in degrees Fahrenheit?",
+		134,
+	},
+	qanda {
+		"How many islands does the country of Sweeden have?",
+		267570,
+	},
+	qanda {
+		"How many elements are in the periodic table?",
+		118,
+	},
+	qanda {
+		"What percentage of animal species are invertibrates?",
+		95,
+	},
+	qanda {
+		"At what temperature are Fahrenheit and Celcius the same value?",
+		-40,
+	},
+	qanda {
+		"How many countries are in Europe?",
+		44,
+	},
+	qanda {
+		"How many keys are on a piano?",
+		88,
+	},
+	qanda {
+		"How high is Mount Everest in meters?",
+		8848,
+	},
+	qanda {
+		"How many bones are there in the average adult human body?",
+		206,
 	},
 }
