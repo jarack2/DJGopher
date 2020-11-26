@@ -93,13 +93,13 @@ func runProgram(s *discordgo.Session, m *discordgo.MessageCreate) {
 	}
 
 	if m.Content == "g!connect4" || connectFourRunning == true {
-		playerStart := m.Author.ID
+		playerStart := m.Author.Username
 		if !connectFourRunning {
 			games.ConnectFour(s, m, connectFourRunning, playerStart)
 			connectFourRunning = true
 			return
 		}
-		
+
 		games.ConnectFour(s, m, connectFourRunning, playerStart)
 		return
 	}

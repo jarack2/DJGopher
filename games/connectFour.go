@@ -41,10 +41,14 @@ func ConnectFour(s *discordgo.Session, m *discordgo.MessageCreate, connectFourRu
 
 	} else {
 		if !gameWin {
-			playerJoin(s, m)
-			dropPiece(s, m, player1, player2)
-			s.ChannelMessageSend(testing, "Ending turn, Switching to Player: "+activePlayer)
-			//setActive(player1, player2, activePlayer)
+			if !playersFull {
+				playerJoin(s, m)
+			} else {
+				dropPiece(s, m, player1, player2)
+				boardToString()
+				s.ChannelMessageSend(testing, boardMessage)
+				s.ChannelMessageSend(testing, "Ending turn, Switching to Player: "+activePlayer)
+			}
 		}
 	}
 	return
@@ -79,7 +83,7 @@ func setActive(player1 string, player2 string, activePlayer string) {
 }
 
 func checkSpace(input int, pieceVal int) bool {
-	i := ROWS
+	i := ROWS - 1
 	var emptySpace bool = false
 	for i > 0 {
 		if formatBoard[i][input] != 0 { //checks the input column, row by row
@@ -98,7 +102,7 @@ func checkSpace(input int, pieceVal int) bool {
 
 func dropPiece(s *discordgo.Session, m *discordgo.MessageCreate, player1 string, player2 string) {
 	s.ChannelMessageSend(testing, "Player: "+activePlayer+" turn")
-	if m.Author.ID != activePlayer {
+	if m.Author.Username != activePlayer {
 		s.ChannelMessageSend(testing, "Error: You are not the active Player!")
 	} else {
 		input, err := strconv.Atoi(m.Content)
@@ -130,17 +134,15 @@ func dropPiece(s *discordgo.Session, m *discordgo.MessageCreate, player1 string,
 
 func playerJoin(s *discordgo.Session, m *discordgo.MessageCreate) {
 	s.ChannelMessageSend(testing, "Player2 opt in with g!gameJoin")
-	for {
-
-		if m.Content == "g!gameJoin" {
-			player2 = m.Author.ID
-			s.ChannelMessageSend(testing, "Added player 2: "+player2)
-			return
-		}
-		if m.Content != "g!gameJoin" {
-			s.ChannelMessageSend(testing, "Error No Player 2")
-			s.ChannelMessageSend(testing, "Exit with g!stop")
-		}
+	if m.Content == "g!gameJoin" {
+		player2 = m.Author.Username
+		playersFull = true
+		s.ChannelMessageSend(testing, "Added player 2: "+player2)
+		return
+	}
+	if m.Content != "g!gameJoin" {
+		s.ChannelMessageSend(testing, "Error No Player 2")
+		s.ChannelMessageSend(testing, "Exit with g!stop")
 	}
 
 }
@@ -164,6 +166,10 @@ func boardToString() {
 		boardMessage += "\n"
 	}
 	boardMessage += "1️⃣" + "2️⃣" + "3️⃣" + "4️⃣" + "5️⃣" + "6️⃣"
+	boardMessage += "\n"
+}
+
+func player() {
 
 }
 
