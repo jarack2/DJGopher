@@ -20,7 +20,7 @@ var chosen_word string // the word picked from the dictionary
 var guessed_letters string // the letters that the user has guessed
 var guessed_word string // the word that the user is currently testing
 
-var testing = "765802303978340352" // discord testing channel
+var testing = m.ChannelID // discord testing channel
 
 var movesLeft = 7 // how many wrong moves the user has left
 var display = 0 // where the display is in the array
