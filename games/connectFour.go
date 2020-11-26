@@ -148,7 +148,7 @@ func playerJoin(s *discordgo.Session, m *discordgo.MessageCreate) {
 }
 
 func boardToString() {
-
+	boardMessage = ""
 	var piece int
 
 	for i := 0; i < ROWS; i++ {
