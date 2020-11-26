@@ -65,7 +65,7 @@ func main() {
 // This function will be called (due to AddHandler above) every time a new
 // message is created on any channel that the authenticated bot has access to.
 func runProgram(s *discordgo.Session, m *discordgo.MessageCreate) {
-	testing := m.ChannelID
+	dschannel := m.ChannelID
 	// Ignore all messages created by the bot itself
 	// This isn't required in this specific example but it's a good practice.
 	if m.Author.ID == s.State.User.ID {
@@ -73,7 +73,7 @@ func runProgram(s *discordgo.Session, m *discordgo.MessageCreate) {
 	}
 	// If the message is "ping" reply with "Pong!"
 	if m.Content == "g!ping" {
-		s.ChannelMessageSend(testing, "Pong!")
+		s.ChannelMessageSend(dschannel, "Pong!")
 		return
 	}
 
@@ -127,14 +127,14 @@ func runProgram(s *discordgo.Session, m *discordgo.MessageCreate) {
 	// If the message is "pong" reply with "Ping!"
 	if m.Content == "g!pong" {
 		s.UpdateStatus(0, "pong!")
-		s.ChannelMessageSend(testing, "Ping!")
+		s.ChannelMessageSend(dschannel, "Ping!")
 		return
 	}
 
 	// If the message is "pog" reply with ":gitpog:"
 	if m.Content == "pog" {
 		s.UpdateStatus(0, "pog!")
-		s.ChannelMessageSend(testing, "<:gitpog:770159988915044352>")
+		s.ChannelMessageSend(dschannel, "<:gitpog:770159988915044352>")
 		return
 	}
 
