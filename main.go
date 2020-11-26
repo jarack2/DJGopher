@@ -65,7 +65,7 @@ func main() {
 // This function will be called (due to AddHandler above) every time a new
 // message is created on any channel that the authenticated bot has access to.
 func runProgram(s *discordgo.Session, m *discordgo.MessageCreate) {
-	testing := "765802303978340352"
+	testing := m.ChannelID
 	// Ignore all messages created by the bot itself
 	// This isn't required in this specific example but it's a good practice.
 	if m.Author.ID == s.State.User.ID {
