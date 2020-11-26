@@ -83,7 +83,7 @@ func runProgram(s *discordgo.Session, m *discordgo.MessageCreate) {
 		musicplayer.MusicPlayer(s, m, "music/")
 	}
 
-	if m.Content == "m!stop" {
+	if m.Content == "m!stop" && musicRunning {
 		musicRunning = false
 		musicplayer.MusicPlayer(s, m, "")
 	}

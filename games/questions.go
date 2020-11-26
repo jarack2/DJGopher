@@ -5,7 +5,7 @@ type qanda struct {
 	answer int
 }
 
-var questionArray = [21]qanda {
+var questionArray = []qanda {
 	qanda {
 		"How many Earths could fit inside the sun?",
 		1300000,
@@ -59,7 +59,7 @@ var questionArray = [21]qanda {
 		134,
 	},
 	qanda {
-		"How many islands does the country of Sweeden have?",
+		"How many islands does the country of Sweden have?",
 		267570,
 	},
 	qanda {
@@ -89,5 +89,9 @@ var questionArray = [21]qanda {
 	qanda {
 		"How many bones are there in the average adult human body?",
 		206,
+	},
+	qanda {
+		"How fast can an ostrich run (in miles per hour)?",
+		43,
 	},
 }

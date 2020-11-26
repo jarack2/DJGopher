@@ -13,23 +13,15 @@ type playerInfo struct {
 	name string
 	points int
 	answer int
+	hasAnswered bool
 }
 
 var playerCount int = 0 // number of players in the game
-var players = [6]playerInfo {
-	playerInfo {points: 0, name: "1"},
-	playerInfo {points: 0, name: "2"},
-	playerInfo {points: 0, name: "3"},
-	playerInfo {points: 0, name: "4"},
-	playerInfo {points: 0, name: "5"},
-	playerInfo {points: 0, name: "6"},
-}
-var playerTracker int
+var players [6]playerInfo
 
 var currentAnswer int
 var currentQuestion = 0
 var questionsAsked = 0
-var answersCollected = 0
 
 var trivia_game_running = false
 const numberRounds = 4
@@ -50,27 +42,31 @@ func Trivia(s *discordgo.Session, m *discordgo.MessageCreate, trivia_game_runnin
 	}
 
 	if !trivia_game_running { // begin game
+		resetTrivia()
 		trivia_game_running = true
 		s.ChannelMessageSend(testing, "Lets Play Trivia!")
 		s.ChannelMessageSend(testing, "How many people are playing? (can do 2 to 6 players)") // ask for player count.
-	} else if (playerCount < 2 || playerCount > 6) {
+		optInPlayer(s, m)
+
+	} else if (playerCount < 2 || playerCount > 6) { // message has the player count
 		inputMessagePlayerCount(s,m)
-	} else if (m.Content == "g!opt-in" && optedPlayers < playerCount) {
-		players[optedPlayers].id = m.Author.ID // TODO: use player names with ids
-		players[optedPlayers].name = m.Author.Username
-		optedPlayers++
+
+	} else if (m.Content == "g!opt-in" && optedPlayers < playerCount) { // message is a player opting in
+		optInPlayer(s, m)
 		if (optedPlayers < playerCount) {
 			s.ChannelMessageSend(testing, "Need " + strconv.Itoa(playerCount - optedPlayers) + " more players to type 'g!opt-in' to start the trivia game.")
 		} else {
 			s.ChannelMessageSend(testing, "That's enough players, let's begin!")
 			generateQuestion(s, m)
 		}
-	} else {
+
+	} else { // message is an answer to a trivia question
 		collectAnswer(s,m)
-		answersCollected++
-		if (answersCollected >= playerCount) {
+		if (canDetermineWinner()) {
 			determineRoundWinner(s,m)
-			answersCollected = 0
+			for i := int(0); i < playerCount; i++ {
+				players[i].hasAnswered = false
+			}
 			currentRound++
 			if !(currentRound<=numberRounds) {
 				declareWinner(s,m)
@@ -84,6 +80,12 @@ func Trivia(s *discordgo.Session, m *discordgo.MessageCreate, trivia_game_runnin
 		}
 	}
 	return trivia_game_running
+}
+
+func optInPlayer(s *discordgo.Session, m *discordgo.MessageCreate) {
+	players[optedPlayers].id = m.Author.ID
+	players[optedPlayers].name = m.Author.Username
+	optedPlayers++
 }
 
 func inputMessagePlayerCount(s *discordgo.Session, m *discordgo.MessageCreate) { // get the number of players
@@ -105,7 +107,6 @@ func inputMessagePlayerCount(s *discordgo.Session, m *discordgo.MessageCreate) {
 	}
 	s.ChannelMessageSend(testing, "You have selected " + strconv.Itoa(playerCount) + " players.")
 	s.ChannelMessageSend(testing, "Type 'g!opt-in' if you would like to play trivia!")
-	playerTracker = 0
 	return
 }
 
@@ -121,12 +122,37 @@ func generateQuestion(s *discordgo.Session, m *discordgo.MessageCreate) { // Sel
 func collectAnswer(s *discordgo.Session, m *discordgo.MessageCreate) { // Collects the answer of an individual player
 	for i := 0; i < playerCount; i++ {
 		if (m.Author.ID == players[i].id) {
-			players[i].answer,_ = strconv.Atoi(m.Content)
+			answer,err := strconv.Atoi(m.Content)
+			if err == nil {
+				var alreadyGuessed = false
+				for j := 0; j < playerCount; j++ {
+					if players[j].answer == answer && players[j].hasAnswered == true && players[j].id != m.Author.ID {
+						alreadyGuessed = true
+					}
+				}
+				if !alreadyGuessed {
+					players[i].answer = answer
+					players[i].hasAnswered = true
+				} else {
+					s.ChannelMessageSend(testing, players[i].name + ", that number was already guessed, choose a different one.")
+				}
+			} else {
+				s.ChannelMessageSend(testing, players[i].name + ", you can only use whole number values.")
+			}
 			//return (currently commented so that I can pretend to be multiple players)
 			//TODO: uncomment return when more people are playing
 		}
 	}
 	return
+}
+
+func canDetermineWinner() bool {
+	for i := int(0); i < playerCount; i++ {
+		if !players[i].hasAnswered {
+			return false
+		}
+	}
+	return true
 }
 
 func determineRoundWinner(s *discordgo.Session, m *discordgo.MessageCreate) { // The bot reveals who had the closest answer for the current question
@@ -157,17 +183,16 @@ func declareWinner(s *discordgo.Session, m *discordgo.MessageCreate) { // declar
 func resetTrivia() { // reset everything
 	playerCount = 0
 	players = [6]playerInfo {
-		playerInfo {points: 0},
-		playerInfo {points: 0},
-		playerInfo {points: 0},
-		playerInfo {points: 0},
-		playerInfo {points: 0},
-		playerInfo {points: 0},
+		playerInfo {points: 0, name: "1", hasAnswered: false},
+		playerInfo {points: 0, name: "2", hasAnswered: false},
+		playerInfo {points: 0, name: "3", hasAnswered: false},
+		playerInfo {points: 0, name: "4", hasAnswered: false},
+		playerInfo {points: 0, name: "5", hasAnswered: false},
+		playerInfo {points: 0, name: "6", hasAnswered: false},
 	}
 
 	currentQuestion = 0
 	questionsAsked = 0
-	answersCollected = 0
 
 	currentRound = 1
 
