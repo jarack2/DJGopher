@@ -1,6 +1,7 @@
 package games
 
 import (
+	"fmt"
 	"log"
 	"strconv"
 
@@ -22,7 +23,7 @@ var xChoice []string = []string{"1️⃣", "2️⃣", "3️⃣", "4️⃣", "5�
 var formatBoard [ROWS][COLS]int
 var emptyPiece = "⚪"
 var p1Piece = "🔴"
-var p2Piece = "⚫"
+var p2Piece = "🔵"
 var boardMessage = ""
 
 //ConnectFour driver
@@ -30,10 +31,12 @@ func ConnectFour(s *discordgo.Session, m *discordgo.MessageCreate, connectFourRu
 	if m.Author.ID == s.State.User.ID {
 		return
 	}
-	player1 = playerStart
+
 	activePlayer = playerStart
 
 	if !connectFourRunning {
+		player1 = playerStart
+
 		s.ChannelMessageSend(testing, "Lets Play ConnectFour!")
 		//	playerJoin(s, m) //loops until player 2 joins
 		boardToString() //string representation of board
@@ -95,6 +98,7 @@ func checkSpace(input int, pieceVal int) bool {
 			formatBoard[i][input] = pieceVal //sets empty piece to activeplayer piece
 			checkWin(i, input, pieceVal)
 			emptySpace = true
+			break
 		}
 	}
 	return emptySpace
@@ -106,6 +110,7 @@ func dropPiece(s *discordgo.Session, m *discordgo.MessageCreate, player1 string,
 		s.ChannelMessageSend(testing, "Error: You are not the active Player!")
 	} else {
 		input, err := strconv.Atoi(m.Content)
+		input--
 		if err != nil {
 			s.ChannelMessageSend(testing, "Error: input not a number")
 			log.Fatal(err)
@@ -122,7 +127,12 @@ func dropPiece(s *discordgo.Session, m *discordgo.MessageCreate, player1 string,
 		}
 
 		//input to change piece on board to activePlayer color
-		if !checkSpace(input, pieceVal) {
+		check := checkSpace(input, pieceVal)
+
+		fmt.Println(player1)
+		// fmt.Println(activePlayer + " ")
+		// fmt.Println(check)
+		if !check {
 			s.ChannelMessageSend(testing, "Error: Column Full input another column")
 		} else {
 			setActive(player1, player2, activePlayer)
@@ -178,3 +188,7 @@ type gameBoard struct {
 	Turn      uint8
 	Board     string
 }
+
+// TODO:
+// not changing players after each turn when it says "ending turn switching to player"
+// currently does not check for win
