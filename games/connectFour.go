@@ -20,6 +20,7 @@ const COLS = 6
 
 var xChoice []string = []string{"1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣"}
 var formatBoard [ROWS][COLS]int
+var blankBoard [ROWS][COLS]int
 var emptyPiece = "⚪"
 var p1Piece = "🔴"
 var p2Piece = "🔵"
@@ -45,6 +46,10 @@ func ConnectFour(s *discordgo.Session, m *discordgo.MessageCreate, connectFourRu
 			if !playersFull {
 				playerJoin(s, m)
 			} else {
+				if m.Content == "g!connect4 stop" { //resets the board
+					connectFourReset(connectFourRunning)
+
+				}
 				connectFourRunning = boardFull()
 				dropPiece(s, m, player1, player2)
 				boardToString()
@@ -54,7 +59,7 @@ func ConnectFour(s *discordgo.Session, m *discordgo.MessageCreate, connectFourRu
 			}
 		} else {
 			s.ChannelMessageSend(dschannel, "Game Won by: "+activePlayer)
-
+			return
 		}
 
 	}
@@ -210,16 +215,11 @@ func boardToString() {
 	boardMessage += "\n"
 }
 
-func player() {
+func connectFourReset(run bool) {
+	run = false
+	formatBoard = blankBoard
+	gameWin = false
+	player2 = ""
+	playersFull = false
 
 }
-
-type gameBoard struct {
-	LastPiece uint8
-	Turn      uint8
-	Board     string
-}
-
-// TODO:
-// not changing players after each turn when it says "ending turn switching to player"
-// currently does not check for win
