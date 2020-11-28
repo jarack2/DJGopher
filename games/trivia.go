@@ -87,6 +87,13 @@ func Trivia(s *discordgo.Session, m *discordgo.MessageCreate, trivia_game_runnin
 }
 
 func optInPlayer(s *discordgo.Session, m *discordgo.MessageCreate) {
+	// For development mode, comment out the entirety of the for loop.
+	for i := int(0); i < optedPlayers; i++ {
+		if players[i].id == m.Author.ID {
+			s.ChannelMessageSend(dschannel, "You have already opted in " + m.Author.Username)
+			return
+		}
+	}
 	players[optedPlayers].id = m.Author.ID
 	players[optedPlayers].name = m.Author.Username
 	optedPlayers++
@@ -143,8 +150,6 @@ func collectAnswer(s *discordgo.Session, m *discordgo.MessageCreate) { // Collec
 			} else {
 				s.ChannelMessageSend(dschannel, players[i].name+", you can only use whole number values.")
 			}
-			//return (currently commented so that I can pretend to be multiple players)
-			//TODO: uncomment return when more people are playing
 		}
 	}
 	return
@@ -187,12 +192,12 @@ func declareWinner(s *discordgo.Session, m *discordgo.MessageCreate) { // declar
 func resetTrivia() { // reset everything
 	playerCount = 0
 	players = [6]playerInfo{
-		playerInfo{points: 0, name: "1", hasAnswered: false},
-		playerInfo{points: 0, name: "2", hasAnswered: false},
-		playerInfo{points: 0, name: "3", hasAnswered: false},
-		playerInfo{points: 0, name: "4", hasAnswered: false},
-		playerInfo{points: 0, name: "5", hasAnswered: false},
-		playerInfo{points: 0, name: "6", hasAnswered: false},
+		playerInfo{points: 0, id: "", name: "", hasAnswered: false},
+		playerInfo{points: 0, id: "", name: "", hasAnswered: false},
+		playerInfo{points: 0, id: "", name: "", hasAnswered: false},
+		playerInfo{points: 0, id: "", name: "", hasAnswered: false},
+		playerInfo{points: 0, id: "", name: "", hasAnswered: false},
+		playerInfo{points: 0, id: "", name: "", hasAnswered: false},
 	}
 
 	currentQuestion = 0
