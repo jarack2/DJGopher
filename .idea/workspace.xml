@@ -20,9 +20,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8242eb07-3229-4c73-9d2b-18f5a980acea" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/music/rickroll/rickRoll.dca" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/music/rock/2AyeAyeAye.dca" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DJGopher.exe" beforeDir="false" afterPath="$PROJECT_DIR$/DJGopher.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/games/hangman.go" beforeDir="false" afterPath="$PROJECT_DIR$/games/hangman.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -124,5 +124,9 @@
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
     <state width="2005" height="305" key="GridCell.Tab.0.right/0.0.2048.1112/1279.-1024.1280.984@0.0.2048.1112" timestamp="1606168040510" />
+    <state x="700" y="193" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1606520939351">
+      <screen x="0" y="0" width="2048" height="1112" />
+    </state>
+    <state x="700" y="193" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/0.0.2048.1112/1279.-1024.1280.984@0.0.2048.1112" timestamp="1606520939351" />
   </component>
 </project>

@@ -26,6 +26,7 @@ func main() {
 
 	// Create a new Discord session using the provided bot token.
 	dg, err := discordgo.New("Bot " + Token)
+	dg.UpdateStatus(0, "DJGopher | !help")
 	if err != nil {
 		fmt.Println("error creating Discord session,", err)
 		return
@@ -65,12 +66,31 @@ func main() {
 // This function will be called (due to AddHandler above) every time a new
 // message is created on any channel that the authenticated bot has access to.
 func runProgram(s *discordgo.Session, m *discordgo.MessageCreate) {
+	s.UpdateStatus(0, "DJGopher | !help")
 	dschannel := m.ChannelID
 	// Ignore all messages created by the bot itself
 	// This isn't required in this specific example but it's a good practice.
 	if m.Author.ID == s.State.User.ID {
 		return
 	}
+
+	if m.Content == "!help" {
+		s.ChannelMessageSend(dschannel, "Commands: \n\n" +
+			"g!ping for the message pong\n" +
+			"g!pong for the message ping\n" +
+			"g!hangman to play hangman\n" +
+			"g!hangman stop to stop playing hangman\n" +
+			"g!trivia to play trivia\n" +
+			"g!connect4 to play connect4\n" +
+			"m!pop to listen to pop music\n" +
+			"m!rock to listen to rock music\n" +
+			"m!gag to listen to funny gag music\n" +
+			"m!alternative to listen to alternative music\n" +
+			"m!jazz to listen to jazz music\n" +
+			"m!rickroll to rickroll your friends\n" +
+			"m!stop to stop playing music")
+	}
+
 	// If the message is "ping" reply with "Pong!"
 	if m.Content == "g!ping" {
 		s.ChannelMessageSend(dschannel, "Pong!")
@@ -84,6 +104,7 @@ func runProgram(s *discordgo.Session, m *discordgo.MessageCreate) {
 	}
 
 	if m.Content == "m!stop" && musicRunning {
+		s.UpdateStatus(0, "DJGopher | !help")
 		musicRunning = false
 		musicplayer.MusicPlayer(s, m, "")
 	}
