@@ -58,24 +58,36 @@ func ConnectFour(s *discordgo.Session, m *discordgo.MessageCreate, connectFourRu
 }
 
 func checkWin(x int, y int, lastValue int) bool {
-	//var row4 int = 0
+
 	var gameWin = false
-	//bottom four
-	//if x <= ROWS-4 {
-	//	if board[row][column] == last && board[row-1][column] === color && board[row-2][column] === color && board[row-3][column] === color)
-	//	return true;
-
-	//	for i := x + 1; i < ROWS; x++ {
-	//		if formatBoard[i][y] == lastPieceValue {
-	//			row4++
-	//		}
-
+	//vertical check
+	if x <= ROWS-5 {
+		//bottom 4
+		if formatBoard[x+1][y] == lastValue && formatBoard[x+2][y] == lastValue && formatBoard[x+3][y] == lastValue {
+			gameWin = true
+			return gameWin
+		}
+		//diag right
+		if y <= COLS-5 && formatBoard[x+1][y+1] == lastValue && formatBoard[x+2][y+2] == lastValue && formatBoard[x+3][y+3] == lastValue {
+			gameWin = true
+			return gameWin
+		}
+		//diag left
+		if y >= COLS+5 && formatBoard[x+1][y-1] == lastValue && formatBoard[x+2][y-2] == lastValue && formatBoard[x+3][y-3] == lastValue {
+			gameWin = true
+			return gameWin
+		}
+	}
+	//horizontal
+	if y <= COLS-5 {
+		return gameWin
+	}
 	return gameWin
 }
 
-func boardFull() {
-
-}
+//func boardFull() {
+///
+//}
 
 func setActive(player1 string, player2 string, activePlayer string) {
 	if activePlayer == player1 {
