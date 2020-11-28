@@ -2,7 +2,6 @@ package games
 
 import (
 	"fmt"
-	"log"
 	"strconv"
 
 	"github.com/bwmarrin/discordgo"
@@ -33,26 +32,31 @@ func ConnectFour(s *discordgo.Session, m *discordgo.MessageCreate, connectFourRu
 	}
 
 	activePlayer = playerStart
-
+	player1 = playerStart
 	if !connectFourRunning {
-		player1 = playerStart
 
-		s.ChannelMessageSend(testing, "Lets Play ConnectFour!")
+		s.ChannelMessageSend(dschannel, "Lets Play ConnectFour!")
 		//	playerJoin(s, m) //loops until player 2 joins
 		boardToString() //string representation of board
-		s.ChannelMessageSend(testing, boardMessage)
+		s.ChannelMessageSend(dschannel, boardMessage)
 
 	} else {
 		if !gameWin {
 			if !playersFull {
 				playerJoin(s, m)
 			} else {
+				connectFourRunning = boardFull()
 				dropPiece(s, m, player1, player2)
 				boardToString()
-				s.ChannelMessageSend(testing, boardMessage)
-				s.ChannelMessageSend(testing, "Ending turn, Switching to Player: "+activePlayer)
+
+				s.ChannelMessageSend(dschannel, boardMessage)
+				s.ChannelMessageSend(dschannel, "Ending turn, Switching to Player: "+activePlayer)
 			}
+		} else {
+			s.ChannelMessageSend(dschannel, "Game Won by: "+activePlayer)
+
 		}
+
 	}
 	return
 }
@@ -93,16 +97,24 @@ func checkWin(x int, y int, lastValue int) bool {
 	return false
 }
 
-//func boardFull() {
-///
-//}
-
-func setActive(player1 string, player2 string, activePlayer string) {
-	if activePlayer == player1 {
-		activePlayer = player2
-	} else if activePlayer == player2 {
-		activePlayer = player1
+func setActive(plyrCurr string, plyrNxt string, activePlayer string) {
+	if activePlayer == plyrCurr {
+		activePlayer = plyrNxt
+	} else if activePlayer == plyrNxt {
+		activePlayer = plyrCurr
 	}
+}
+
+func boardFull() bool {
+	for i := 0; i < ROWS-1; i++ {
+		for j := 0; j < COLS-1; j++ {
+			if formatBoard[i][j] != 0 {
+				return false
+			}
+		}
+	}
+	return true
+
 }
 
 func checkSpace(input int, pieceVal int) bool {
@@ -115,8 +127,8 @@ func checkSpace(input int, pieceVal int) bool {
 				return emptySpace //false if no empty pieces in column
 			}
 		} else {
-			formatBoard[i][input] = pieceVal //sets empty piece to activeplayer piece
-			checkWin(i, input, pieceVal)
+			formatBoard[i][input] = pieceVal       //sets empty piece to activeplayer piece
+			gameWin = checkWin(i, input, pieceVal) //checks to see if game is over
 			emptySpace = true
 			break
 		}
@@ -125,27 +137,25 @@ func checkSpace(input int, pieceVal int) bool {
 }
 
 func dropPiece(s *discordgo.Session, m *discordgo.MessageCreate, player1 string, player2 string) {
-	s.ChannelMessageSend(testing, "Player: "+activePlayer+" turn")
+	s.ChannelMessageSend(dschannel, "Player: "+activePlayer+" turn")
 	if m.Author.Username != activePlayer {
-		s.ChannelMessageSend(testing, "Error: You are not the active Player!")
+		s.ChannelMessageSend(dschannel, "Error: You are not the active Player!")
 	} else {
 		input, err := strconv.Atoi(m.Content)
 		input--
 		if err != nil {
-			s.ChannelMessageSend(testing, "Error: input not a number")
-			log.Fatal(err)
+			s.ChannelMessageSend(dschannel, "Error: input not a number")
 		}
 		if input < 0 || input > COLS {
-			s.ChannelMessageSend(testing, "Error: input must be in range 0 to "+strconv.Itoa(COLS))
-			log.Fatal(err)
+			s.ChannelMessageSend(dschannel, "Error: input must be in range 0 to "+strconv.Itoa(COLS))
 		}
+
 		var pieceVal int = 0
 		if activePlayer == player1 {
 			pieceVal = 1
 		} else {
 			pieceVal = 2
 		}
-
 		//input to change piece on board to activePlayer color
 		check := checkSpace(input, pieceVal)
 
@@ -153,8 +163,9 @@ func dropPiece(s *discordgo.Session, m *discordgo.MessageCreate, player1 string,
 		// fmt.Println(activePlayer + " ")
 		// fmt.Println(check)
 		if !check {
-			s.ChannelMessageSend(testing, "Error: Column Full input another column")
+			s.ChannelMessageSend(dschannel, "Error: Column Full input another column")
 		} else {
+
 			setActive(player1, player2, activePlayer)
 
 		}
@@ -163,16 +174,16 @@ func dropPiece(s *discordgo.Session, m *discordgo.MessageCreate, player1 string,
 }
 
 func playerJoin(s *discordgo.Session, m *discordgo.MessageCreate) {
-	s.ChannelMessageSend(testing, "Player2 opt in with g!gameJoin")
+	s.ChannelMessageSend(dschannel, "Player2 opt in with g!gameJoin")
 	if m.Content == "g!gameJoin" {
 		player2 = m.Author.Username
 		playersFull = true
-		s.ChannelMessageSend(testing, "Added player 2: "+player2)
+		s.ChannelMessageSend(dschannel, "Added player 2: "+player2)
 		return
 	}
 	if m.Content != "g!gameJoin" {
-		s.ChannelMessageSend(testing, "Error No Player 2")
-		s.ChannelMessageSend(testing, "Exit with g!stop")
+		s.ChannelMessageSend(dschannel, "Error No Player 2")
+		s.ChannelMessageSend(dschannel, "Exit with g!stop")
 	}
 
 }
