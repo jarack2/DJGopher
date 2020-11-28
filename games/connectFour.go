@@ -58,31 +58,39 @@ func ConnectFour(s *discordgo.Session, m *discordgo.MessageCreate, connectFourRu
 }
 
 func checkWin(x int, y int, lastValue int) bool {
-
-	var gameWin = false
-	//vertical check
-	if x <= ROWS-5 {
-		//bottom 4
-		if formatBoard[x+1][y] == lastValue && formatBoard[x+2][y] == lastValue && formatBoard[x+3][y] == lastValue {
-			gameWin = true
-			return gameWin
-		}
-		//diag right
-		if y <= COLS-5 && formatBoard[x+1][y+1] == lastValue && formatBoard[x+2][y+2] == lastValue && formatBoard[x+3][y+3] == lastValue {
-			gameWin = true
-			return gameWin
-		}
-		//diag left
-		if y >= COLS+5 && formatBoard[x+1][y-1] == lastValue && formatBoard[x+2][y-2] == lastValue && formatBoard[x+3][y-3] == lastValue {
-			gameWin = true
-			return gameWin
+	// horizontalCheck
+	for j := 0; j < COLS-4; j++ {
+		for i := 0; i < ROWS; i++ {
+			if formatBoard[i][j] == lastValue && formatBoard[i][j+1] == lastValue && formatBoard[i][j+2] == lastValue && formatBoard[i][j+3] == lastValue {
+				return true
+			}
 		}
 	}
-	//horizontal
-	if y <= COLS-5 {
-		return gameWin
+	// verticalCheck
+	for i := 0; i < COLS-4; i++ {
+		for j := 0; j < ROWS; j++ {
+			if formatBoard[i][j] == lastValue && formatBoard[i+1][j] == lastValue && formatBoard[i+2][j] == lastValue && formatBoard[i+3][j] == lastValue {
+				return true
+			}
+		}
 	}
-	return gameWin
+	// ascendingDiagonalCheck
+	for i := 3; i < COLS; i++ {
+		for j := 0; j < ROWS-4; j++ {
+			if formatBoard[i][j] == lastValue && formatBoard[i-1][j+1] == lastValue && formatBoard[i-2][j+2] == lastValue && formatBoard[i-3][j+3] == lastValue {
+				return true
+			}
+		}
+	}
+	// descendingDiagonalCheck
+	for i := 3; i < COLS; i++ {
+		for j := 3; j < ROWS; j++ {
+			if formatBoard[i][j] == lastValue && formatBoard[i-1][j-1] == lastValue && formatBoard[i-2][j-2] == lastValue && formatBoard[i-3][j-3] == lastValue {
+				return true
+			}
+		}
+	}
+	return false
 }
 
 //func boardFull() {
