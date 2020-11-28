@@ -1,26 +1,26 @@
 DJ Gopher
 ----------
-##Overview
+# Overview
 The GO language is a language created by google in order to fullfill scalability, space, and run time needs.
 
 DJ Gopher is a discord bot written in GO that has a couple of different functions which include:
 
-Games/
-    Hangman (1+ players)
-    Connect Four (2 players)
-    Trivia (2-6 players)
-Music
-    Pop
-    Punk
-    Rock 
-    Sound Effects
+* Games/
+  * Hangman (1+ players)
+  * Connect Four (2 players)
+  * Trivia (2-6 players)
+* Music
+  * Pop
+  * Punk
+  * Rock 
+  * Sound Effects
 
 The bot is only interactable in Discord, a chat client, and must be running on a server or computer in order to connect to Discord and function properly. 
 
 Once the program is running, no further input besides that in Discord chatbox is needed. 
 
 
-##Installing Environment:
+## Installing Environment:
 
 To get started with GO, head over to the official downloads page and click on the OS being used. https://golang.org/doc/install
 
@@ -45,34 +45,33 @@ Finally, the latest version of Git should be installed. Git is a way to push, pu
 All the necessary components are installed to effectively work with GO lang in the Windows environment
 
 
-##Configuring The Bot:
+## Configuring The Bot:
 
 To start, clone the repository that includes the bot. This is done by using the command 
 
- git clone github.com/JaredRackley/DJGopher/
+$ git clone github.com/JaredRackley/DJGopher/
 
 After this is done run the following command
 
- go get github.com/bwmarrin/discordgo
+$ go get github.com/bwmarrin/discordgo
 
 The Discord bot is now ready to run. Use the command
 
- go build main.go  
+$ go build main.go  
 
 This will create an executable DJGopher.exe that will run the bot when executed
 
 
-##Usage:
+## Usage:
 
 The following commands will invoke the bot
  
+![User Commeands](https://github.com/JaredRackley/DJGopher/blob/main/UserInput.png)
 
 
 
-
-
-##Adding Music:
-Im order to add music it must first be converted from a mp3 file to dca use the following:
+## Adding Music:
+In order to add music it must first be converted from a mp3 file to dca use the following:
 
 ffmpeg -i example.mp3 -f s16le -ar 48000 -ac 2 pipe:1 | dca > example.dca
 
