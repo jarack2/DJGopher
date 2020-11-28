@@ -1,4 +1,4 @@
-DJ Gopher
+DJ Gopher ![GO Mascot](https://pbs.twimg.com/media/DTYVjS-X4AEgy7p.png)
 ----------
 # Overview
 The GO language is a language created by google in order to fullfill scalability, space, and run time needs.
@@ -66,12 +66,13 @@ This will create an executable DJGopher.exe that will run the bot when executed
 
 The following commands will invoke the bot
  
-![User Commeands](https://github.com/JaredRackley/DJGopher/blob/main/UserInput.png)
+![User Commands](https://github.com/JaredRackley/DJGopher/blob/main/UserInput.png)
 
 
 
 ## Adding Music:
-In order to add music it must first be converted from a mp3 file to dca use the following:
+In order to add music it must first be converted from a mp3 file to dca file.
+Use the following command in the terminal: 
 
 ffmpeg -i example.mp3 -f s16le -ar 48000 -ac 2 pipe:1 | dca > example.dca
 
