@@ -18,6 +18,7 @@ const Token string = "NzcwMDAyMzExODc4OTM0NTI4.X5XOiQ.Z9F3_0y55l_VScYv7qx_zbV38r
 var gameRunning = false
 var musicRunning = false
 var triviaGameRunning = false
+var connectFourRunning = false
 
 // BotID is the unique id of the bot
 var BotID string
@@ -173,6 +174,18 @@ func runProgram(s *discordgo.Session, m *discordgo.MessageCreate) {
 			return
 		}
 		games.Hangman(s, m, gameRunning)
+		return
+	}
+
+	if m.Content == "g!connect4" || connectFourRunning == true {
+		playerStart := m.Author.Username
+		if !connectFourRunning {
+			games.ConnectFour(s, m, connectFourRunning, playerStart)
+			connectFourRunning = true
+			return
+		}
+
+		games.ConnectFour(s, m, connectFourRunning, playerStart)
 		return
 	}
 
