@@ -1,6 +1,6 @@
-DJ Gopher ![GO Mascot](https://pbs.twimg.com/media/DTYVjS-X4AEgy7p.png)
+# DJ Gopher <img src="https://pbs.twimg.com/media/DTYVjS-X4AEgy7p.png" width="100" height="100">
 ----------
-# Overview
+## Overview
 The GO language is a language created by google in order to fullfill scalability, space, and run time needs.
 
 DJ Gopher is a discord bot written in GO that has a couple of different functions which include:
