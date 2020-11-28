@@ -177,6 +177,12 @@ func runProgram(s *discordgo.Session, m *discordgo.MessageCreate) {
 		return
 	}
 
+	if m.Content == "g!connect4 stop" && connectFourRunning == true{
+		connectFourRunning = false
+		s.ChannelMessageSend(dschannel, "Resetting game")
+		games.ConnectFourReset(connectFourRunning)
+	}
+
 	if m.Content == "g!connect4" || connectFourRunning == true {
 		playerStart := m.Author.Username
 		if !connectFourRunning {
@@ -224,3 +230,4 @@ func runProgram(s *discordgo.Session, m *discordgo.MessageCreate) {
 //	// Set the playing status.
 //	s.UpdateStatus(0, "!TayTay")
 //}
+

@@ -25,75 +25,91 @@ var emptyPiece = "⚪"
 var p1Piece = "🔴"
 var p2Piece = "🔵"
 var boardMessage = ""
+var winner string
+var playerTurn string
 
 //ConnectFour driver
 func ConnectFour(s *discordgo.Session, m *discordgo.MessageCreate, connectFourRunning bool, playerStart string) {
 	if m.Author.ID == s.State.User.ID {
 		return
 	}
+	dschannel = m.ChannelID
 
 	activePlayer = playerStart
-	player1 = playerStart
 	if !connectFourRunning {
-
+		activePlayer = playerStart
+		player1 = playerStart
+		playerTurn = player1
 		s.ChannelMessageSend(dschannel, "Lets Play ConnectFour!")
 		//	playerJoin(s, m) //loops until player 2 joins
 		boardToString() //string representation of board
 		s.ChannelMessageSend(dschannel, boardMessage)
+		s.ChannelMessageSend(dschannel, "Player2 opt in with g!gameJoin")
 
 	} else {
 		if !gameWin {
 			if !playersFull {
 				playerJoin(s, m)
 			} else {
-				if m.Content == "g!connect4 stop" { //resets the board
-					connectFourReset(connectFourRunning)
+				if (playerStart == player1 || playerStart == player2) && (playerTurn == playerStart) {
+					connectFourRunning = boardFull()
+					dropPiece(s, m, player1, player2)
+					if gameWin {
+						return
+					}
+					boardToString()
 
+					s.ChannelMessageSend(dschannel, "Player: "+activePlayer+" turn")
+					s.ChannelMessageSend(dschannel, boardMessage)
+					if activePlayer == player1 {
+						s.ChannelMessageSend(dschannel, "Switching to: "+player2+" turn")
+						playerTurn = player2
+					} else if activePlayer == player2 {
+						s.ChannelMessageSend(dschannel, "Switching to: "+player1+" turn")
+						playerTurn = player1
+					}
 				}
-				connectFourRunning = boardFull()
-				dropPiece(s, m, player1, player2)
-				boardToString()
-
-				s.ChannelMessageSend(dschannel, boardMessage)
-				s.ChannelMessageSend(dschannel, "Ending turn, Switching to Player: "+activePlayer)
 			}
 		} else {
-			s.ChannelMessageSend(dschannel, "Game Won by: "+activePlayer)
-			return
+			if playerStart != player1 || playerStart != player2 && playerTurn == playerStart {
+				s.ChannelMessageSend(dschannel, "Game Won by: "+ activePlayer)
+				return
+			}
+
 		}
 
 	}
 	return
 }
 
-func checkWin(x int, y int, lastValue int) bool {
-	// horizontalCheck
-	for j := 0; j < COLS-4; j++ {
-		for i := 0; i < ROWS; i++ {
+func checkWin(lastValue int) bool {
+
+	for j := 0; j < 3; j++ {
+		for i := 0; i < 6; i++ {
 			if formatBoard[i][j] == lastValue && formatBoard[i][j+1] == lastValue && formatBoard[i][j+2] == lastValue && formatBoard[i][j+3] == lastValue {
 				return true
 			}
 		}
 	}
 	// verticalCheck
-	for i := 0; i < COLS-4; i++ {
-		for j := 0; j < ROWS; j++ {
+	for i := 0; i < 3; i++ {
+		for j := 0; j < 6; j++ {
 			if formatBoard[i][j] == lastValue && formatBoard[i+1][j] == lastValue && formatBoard[i+2][j] == lastValue && formatBoard[i+3][j] == lastValue {
 				return true
 			}
 		}
 	}
 	// ascendingDiagonalCheck
-	for i := 3; i < COLS; i++ {
-		for j := 0; j < ROWS-4; j++ {
+	for i := 3; i < 6; i++ {
+		for j := 0; j < 3; j++ {
 			if formatBoard[i][j] == lastValue && formatBoard[i-1][j+1] == lastValue && formatBoard[i-2][j+2] == lastValue && formatBoard[i-3][j+3] == lastValue {
 				return true
 			}
 		}
 	}
 	// descendingDiagonalCheck
-	for i := 3; i < COLS; i++ {
-		for j := 3; j < ROWS; j++ {
+	for i := 3; i < 6; i++ {
+		for j := 3; j < 6; j++ {
 			if formatBoard[i][j] == lastValue && formatBoard[i-1][j-1] == lastValue && formatBoard[i-2][j-2] == lastValue && formatBoard[i-3][j-3] == lastValue {
 				return true
 			}
@@ -102,11 +118,11 @@ func checkWin(x int, y int, lastValue int) bool {
 	return false
 }
 
-func setActive(plyrCurr string, plyrNxt string, activePlayer string) {
-	if activePlayer == plyrCurr {
-		activePlayer = plyrNxt
-	} else if activePlayer == plyrNxt {
-		activePlayer = plyrCurr
+func setActive(activePlayer string) {
+	if activePlayer == player1 {
+		activePlayer = player2
+	} else if activePlayer == player2 {
+		activePlayer = player1
 	}
 }
 
@@ -122,7 +138,7 @@ func boardFull() bool {
 
 }
 
-func checkSpace(input int, pieceVal int) bool {
+func checkSpace(input int, pieceVal int, s *discordgo.Session) bool {
 	i := ROWS - 1
 	var emptySpace bool = false
 	for i > 0 {
@@ -133,7 +149,11 @@ func checkSpace(input int, pieceVal int) bool {
 			}
 		} else {
 			formatBoard[i][input] = pieceVal       //sets empty piece to activeplayer piece
-			gameWin = checkWin(i, input, pieceVal) //checks to see if game is over
+			gameWin = checkWin(pieceVal) //checks to see if game is over
+			if gameWin {
+				emptySpace = true
+				return emptySpace
+			}
 			emptySpace = true
 			break
 		}
@@ -142,7 +162,6 @@ func checkSpace(input int, pieceVal int) bool {
 }
 
 func dropPiece(s *discordgo.Session, m *discordgo.MessageCreate, player1 string, player2 string) {
-	s.ChannelMessageSend(dschannel, "Player: "+activePlayer+" turn")
 	if m.Author.Username != activePlayer {
 		s.ChannelMessageSend(dschannel, "Error: You are not the active Player!")
 	} else {
@@ -162,7 +181,11 @@ func dropPiece(s *discordgo.Session, m *discordgo.MessageCreate, player1 string,
 			pieceVal = 2
 		}
 		//input to change piece on board to activePlayer color
-		check := checkSpace(input, pieceVal)
+		check := checkSpace(input, pieceVal, s)
+		if gameWin {
+			s.ChannelMessageSend(dschannel, "Game Won by: "+activePlayer)
+			return
+		}
 
 		fmt.Println(player1)
 		// fmt.Println(activePlayer + " ")
@@ -171,24 +194,22 @@ func dropPiece(s *discordgo.Session, m *discordgo.MessageCreate, player1 string,
 			s.ChannelMessageSend(dschannel, "Error: Column Full input another column")
 		} else {
 
-			setActive(player1, player2, activePlayer)
-
 		}
 	}
 
 }
 
 func playerJoin(s *discordgo.Session, m *discordgo.MessageCreate) {
-	s.ChannelMessageSend(dschannel, "Player2 opt in with g!gameJoin")
 	if m.Content == "g!gameJoin" {
 		player2 = m.Author.Username
 		playersFull = true
 		s.ChannelMessageSend(dschannel, "Added player 2: "+player2)
+		s.ChannelMessageSend(dschannel, "Player " + player1 + " turn")
 		return
 	}
 	if m.Content != "g!gameJoin" {
 		s.ChannelMessageSend(dschannel, "Error No Player 2")
-		s.ChannelMessageSend(dschannel, "Exit with g!stop")
+		s.ChannelMessageSend(dschannel, "Exit with g!connect4 stop")
 	}
 
 }
@@ -215,11 +236,10 @@ func boardToString() {
 	boardMessage += "\n"
 }
 
-func connectFourReset(run bool) {
+func ConnectFourReset(run bool) {
 	run = false
 	formatBoard = blankBoard
 	gameWin = false
 	player2 = ""
 	playersFull = false
-
 }
