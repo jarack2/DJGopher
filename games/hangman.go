@@ -25,6 +25,7 @@ var testing = "765802303978340352" // discord testing channel
 var movesLeft = 7 // how many wrong moves the user has left
 var display = 0 // where the display is in the array
 func Hangman(s *discordgo.Session, m *discordgo.MessageCreate, game_running bool) {
+	dschannel = m.ChannelID
 	if !game_running {
 		createWordBank()
 		chosen_word = dictionary[rand.Intn(len(dictionary))]
