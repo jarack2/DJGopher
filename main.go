@@ -161,7 +161,7 @@ func runProgram(s *discordgo.Session, m *discordgo.MessageCreate) {
 		return
 	}
 
-	if m.Content == "g!hangman stop" {
+	if (m.Content == "g!hangman stop") && (gameRunning == true) {
 		games.Restart(s, m)
 		gameRunning = false
 		return

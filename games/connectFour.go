@@ -1,7 +1,6 @@
 package games
 
 import (
-	"fmt"
 	"strconv"
 
 	"github.com/bwmarrin/discordgo"
@@ -73,6 +72,7 @@ func ConnectFour(s *discordgo.Session, m *discordgo.MessageCreate, connectFourRu
 		} else {
 			if playerStart != player1 || playerStart != player2 && playerTurn == playerStart {
 				s.ChannelMessageSend(dschannel, "Game Won by: "+ activePlayer)
+				s.ChannelMessageSend(dschannel, "Restart using g!connect4 stop")
 				return
 			}
 
@@ -139,12 +139,12 @@ func boardFull() bool {
 }
 
 func checkSpace(input int, pieceVal int, s *discordgo.Session) bool {
-	i := ROWS - 1
+	i := ROWS-1
 	var emptySpace bool = false
-	for i > 0 {
+	for i > -1 {
 		if formatBoard[i][input] != 0 { //checks the input column, row by row
 			i--
-			if i == 0 {
+			if i < 0 {
 				return emptySpace //false if no empty pieces in column
 			}
 		} else {
@@ -172,6 +172,7 @@ func dropPiece(s *discordgo.Session, m *discordgo.MessageCreate, player1 string,
 		}
 		if input < 0 || input > COLS {
 			s.ChannelMessageSend(dschannel, "Error: input must be in range 0 to "+strconv.Itoa(COLS))
+			return
 		}
 
 		var pieceVal int = 0
@@ -184,14 +185,12 @@ func dropPiece(s *discordgo.Session, m *discordgo.MessageCreate, player1 string,
 		check := checkSpace(input, pieceVal, s)
 		if gameWin {
 			s.ChannelMessageSend(dschannel, "Game Won by: "+activePlayer)
+			s.ChannelMessageSend(dschannel, "Restart using g!connect4 stop")
 			return
 		}
-
-		fmt.Println(player1)
-		// fmt.Println(activePlayer + " ")
-		// fmt.Println(check)
 		if !check {
 			s.ChannelMessageSend(dschannel, "Error: Column Full input another column")
+			s.ChannelMessageSend(dschannel, "If entire board if full restart using g!connect4 stop")
 		} else {
 
 		}
@@ -204,6 +203,7 @@ func playerJoin(s *discordgo.Session, m *discordgo.MessageCreate) {
 		player2 = m.Author.Username
 		playersFull = true
 		s.ChannelMessageSend(dschannel, "Added player 2: "+player2)
+		s.ChannelMessageSend(dschannel, "Player " + player1 + " turn")
 		s.ChannelMessageSend(dschannel, "Player " + player1 + " turn")
 		return
 	}
