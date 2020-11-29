@@ -26,7 +26,7 @@ var questionsAsked = 0
 
 var trivia_game_running = false
 
-const numberRounds = 4
+const numberRounds = 5
 
 var currentRound = 1
 
