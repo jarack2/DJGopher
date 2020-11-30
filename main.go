@@ -82,6 +82,7 @@ func runProgram(s *discordgo.Session, m *discordgo.MessageCreate) {
 			"g!hangman to play hangman\n" +
 			"g!hangman stop to stop playing hangman\n" +
 			"g!trivia to play trivia\n" +
+			"g!stop to stop playing trivia\n" +
 			"g!connect4 to play connect4\n" +
 			"g!connect4 stop to stop connect4\n" +
 			"m!pop to listen to pop music\n" +

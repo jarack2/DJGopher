@@ -57,6 +57,7 @@ func Restart(s *discordgo.Session, m *discordgo.MessageCreate) {
 	return
 }
 
+//IO file operations
 func createWordBank() {
 	file, err := os.Open("./games/words.txt")
 	if err != nil {
