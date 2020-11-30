@@ -73,7 +73,9 @@ The Discord bot is now ready to run. Use the command
 
 $ go build  
 
-This will create an executable DJGopher.exe that will run the bot when executed
+This will create an executable DJGopher.exe that will run the bot when executed or you can use the command below to run it as well
+
+$ go run main.go
 
 
 ## Usage:
