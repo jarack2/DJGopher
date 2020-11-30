@@ -61,6 +61,10 @@ $ go build main.go
 
 This will create an executable DJGopher.exe that will run the bot when executed
 
+## Adding Bot to Your Server:
+
+To add a bot to a server you created and own use this link https://discord.com/api/oauth2/authorize?client_id=770002311878934528&permissions=1849163584&scope=bot
+
 
 ## Usage:
 
