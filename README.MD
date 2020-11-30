@@ -46,7 +46,7 @@ All the necessary components are installed to effectively work with GO lang in t
 
 ## Adding Bot to Server:
 
-A discord account is needed to proceed. Create an account on Discord.com then proceed.
+A discord account is needed to proceed. Create an account on https://discord.com/ then proceed.
 
 DJGopher is an application that must be added then run on a Discord server. To add the bot first create a server. 
 
@@ -63,7 +63,7 @@ Now that the bot is added to the server, we can run it to play games or music.
 
 To start, clone the repository that includes the bot. This is done by using the command 
 
-$ git clone github.com/JaredRackley/DJGopher/
+$ git clone https://github.com/JaredRackley/DJGopher.git
 
 After this is done run the following command
 
