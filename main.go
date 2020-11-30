@@ -209,27 +209,3 @@ func runProgram(s *discordgo.Session, m *discordgo.MessageCreate) {
 	}
 }
 
-//// This function will be called (due to AddHandler above) every time a new
-//// guild is joined.
-//func guildCreate(s *discordgo.Session, event *discordgo.GuildCreate) {
-//
-//	if event.Guild.Unavailable {
-//		return
-//	}
-//
-//	for _, channel := range event.Guild.Channels {
-//		if channel.ID == event.Guild.ID {
-//			_, _ = s.ChannelMessageSend(channel.ID, "Airhorn is ready! Type !airhorn while in a voice channel to play a sound.")
-//			return
-//		}
-//	}
-//}
-//
-////This function will be called (due to AddHandler above) when the bot receives
-//// the "ready" event from Discord.
-//func ready(s *discordgo.Session, event *discordgo.Ready) {
-//
-//	// Set the playing status.
-//	s.UpdateStatus(0, "!TayTay")
-//}
-
