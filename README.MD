@@ -61,20 +61,17 @@ $ go build main.go
 
 This will create an executable DJGopher.exe that will run the bot when executed
 
+## Adding Bot to Your Server:
+
+To add a bot to a server you created and own use this link https://discord.com/api/oauth2/authorize?client_id=770002311878934528&permissions=1849163584&scope=bot.
+This requires you to have an account on discord if you do not have one create and download discord one here https://discord.com/. 
+
 
 ## Usage:
 
 The following commands will invoke the bot
  
 ![User Commands](https://github.com/JaredRackley/DJGopher/blob/main/UserInput.png)
-
-
-
-## Adding Music:
-In order to add music it must first be converted from a mp3 file to dca file.
-Use the following command in the terminal: 
-
-ffmpeg -i example.mp3 -f s16le -ar 48000 -ac 2 pipe:1 | dca > example.dca
 
 
 
