@@ -70,11 +70,3 @@ The following commands will invoke the bot
 
 
 
-## Adding Music:
-In order to add music it must first be converted from a mp3 file to dca file.
-Use the following command in the terminal: 
-
-ffmpeg -i example.mp3 -f s16le -ar 48000 -ac 2 pipe:1 | dca > example.dca
-
-
-
