@@ -71,7 +71,7 @@ $ go get github.com/bwmarrin/discordgo
 
 The Discord bot is now ready to run. Use the command
 
-$ go build main.go  
+$ go build  
 
 This will create an executable DJGopher.exe that will run the bot when executed
 
