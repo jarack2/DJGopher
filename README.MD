@@ -71,7 +71,7 @@ This requires you to have an account on discord if you do not have one create an
 
 The following commands will invoke the bot
  
-![User Commands](https://github.com/JaredRackley/DJGopher/blob/main/Usage.png)
+![User Commands](https://github.com/JaredRackley/DJGopher/blob/main/Photos/Usage.png)
 
 
 
