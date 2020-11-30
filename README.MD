@@ -63,7 +63,7 @@ Now that the bot is added to the server, we can run it to play games or music.
 
 To start, clone the repository that includes the bot. This is done by using the command 
 
-$ git clone github.com/JaredRackley/DJGopher/
+$ git clone https://github.com/JaredRackley/DJGopher.git
 
 After this is done run the following command
 
