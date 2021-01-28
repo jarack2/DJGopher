@@ -12,9 +12,6 @@ import (
 	"github.com/bwmarrin/discordgo"
 )
 
-// Token - tring for the discord bot
-const Token string = "NzcwMDAyMzExODc4OTM0NTI4.X5XOiQ.Z9F3_0y55l_VScYv7qx_zbV38rg"
-
 var gameRunning = false
 var musicRunning = false
 var triviaGameRunning = false
